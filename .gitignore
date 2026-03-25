@@ -1,0 +1,46 @@
+# Node dependencies
+node_modules/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build/test artifacts
+coverage/
+dist/
+build/
+.cache/
+.tmp/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Chrome extension packaging artifacts
+*.crx
+*.pem
+
+# Local binary/export artifacts
+*.zip
+Screenshot.png
+
+# Generated topology update output folders (example: row-wargames-aws-lts_20260310)
+check_updates/*_[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]/
+
+# Optional local output snapshots
+check_updates/**/tmp/

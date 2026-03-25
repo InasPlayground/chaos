@@ -1,0 +1,89 @@
+{
+  "name": "CHAOS Extension",
+  "description": "Chrome Extension for CSEs to be productive",
+  "version": "0.6",
+  "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "cookies",
+    "storage",
+    "favicon"
+  ],
+  "host_permissions": [
+    "http://*/",
+    "https://*/"
+  ],
+  "action": {
+    "default_popup": "chaos.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "chaos.html",
+        "chaos.js",
+        "chaos.css"
+      ],
+      "matches": [
+        "https://mscentral.ams.adobe.net/*",
+        "https://mscentral-gc.amsadobe.com/*",
+        "https://mscentral-basic.ams.adobe.net/*",
+        "https://msc-prod.amsgovcloud.ca/*",
+        "https://mscentral.amscn.adobe.com/*",
+        "https://msc-prod.adobems.cn/*",
+        "https://mscentral-stage.ams.adobe.net/*",
+        "https://msc-production.amsgovcloud.com/*",
+        "https://msc-prod.amsgovcloud.com.au/*",
+        "https://icinga.adobecqms.net/*",
+        "https://icinga.amscn.adobe.com/*",
+        "https://bb.ams.adobe.net/*",
+        "https://bigbear.amscn.adobe.com/*",
+        "https://bigbear-prod.adobems.cn/*",
+        "https://bb-gc.amsadobe.com:8443/*",
+        "https://bigbear-production.amsgovcloud.com/*",
+        "https://bigbear-basic.ams-cloud.net/*",
+        "https://bigbear-stage.stage.ams-cloud.net/*",
+        "https://bigbear-enterprise.ent.ams-cloud.net/*",
+        "https://bigbear-prod.amsgovcloud.ca/*",
+        "https://bigbear-production.amsgovcloud.com.au/*",
+        "https://bigbear-prod.amsgovcloud.com.au/*"
+      ]
+    }
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mscentral.ams.adobe.net/*",
+        "https://mscentral-gc.amsadobe.com/*",
+        "https://mscentral-basic.ams.adobe.net/*",
+        "https://msc-prod.amsgovcloud.ca/*",
+        "https://mscentral.amscn.adobe.com/*",
+        "https://msc-prod.adobems.cn/*",
+        "https://mscentral-stage.ams.adobe.net/*",
+        "https://msc-production.amsgovcloud.com/*",
+        "https://msc-prod.amsgovcloud.com.au/*",
+        "https://icinga.adobecqms.net/*",
+        "https://icinga.amscn.adobe.com/*",
+        "https://bb.ams.adobe.net/*",
+        "https://bigbear.amscn.adobe.com/*",
+        "https://bigbear-prod.adobems.cn/*",
+        "https://bb-gc.amsadobe.com:8443/*",
+        "https://bigbear-production.amsgovcloud.com/*",
+        "https://bigbear-basic.ams-cloud.net/*",
+        "https://bigbear-stage.stage.ams-cloud.net/*",
+        "https://bigbear-enterprise.ent.ams-cloud.net/*",
+        "http://*/libs/granite/core/content/login.html*",
+        "https://*/libs/granite/core/content/login.html*",
+        "https://bigbear-prod.amsgovcloud.ca/*",
+        "https://bigbear-production.amsgovcloud.com.au/*",
+        "https://bigbear-prod.amsgovcloud.com.au/*"
+      ],
+      "js": [
+        "chaos-injector.js"
+      ]
+    }
+  ]
+}

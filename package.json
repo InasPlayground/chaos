@@ -1,0 +1,28 @@
+{
+  "name": "rosetta-incident-extractor",
+  "version": "1.0.0",
+  "description": "Standalone script to extract incidents from the last 24h or 48h for a given customer",
+  "main": "extract-incidents.mjs",
+  "type": "module",
+  "scripts": {
+    "extract": "node extract-incidents.mjs",
+    "extract:24h": "node extract-incidents.mjs --hours 24",
+    "extract:48h": "node extract-incidents.mjs --hours 48"
+  },
+  "keywords": [
+    "rosetta",
+    "incidents",
+    "dynamodb",
+    "extraction"
+  ],
+  "author": "Adobe",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1003.0",
+    "@aws-sdk/lib-dynamodb": "^3.1003.0",
+    "@aws-sdk/util-dynamodb": "^3.540.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1"
+  }
+}
