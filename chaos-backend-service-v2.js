@@ -1,5 +1,5 @@
 /**
- * CHAOS Backend Service v2
+ * CHaOS Backend Service v2
  * Express.js server that directly queries DynamoDB for incidents
  * 
  * Install dependencies:
@@ -113,7 +113,7 @@ app.get('/api/incidents', async (req, res) => {
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'ok',
-        service: 'CHAOS Backend Service',
+        service: 'CHaOS Backend Service',
         version: '2.0.0',
         timestamp: new Date().toISOString()
     });
@@ -499,7 +499,7 @@ app.use((req, res) => {
 app.listen(PORT, () => {
     console.log(`
 ╔════════════════════════════════════════════════════════════╗
-║         CHAOS Backend Service v2 - DynamoDB Direct        ║
+║         CHaOS Backend Service v2 - DynamoDB Direct        ║
 ╚════════════════════════════════════════════════════════════╝
 
 Server running on: http://localhost:${PORT}

@@ -1,4 +1,4 @@
-# Deploy CHAOS Backend Service to AWS EC2
+# Deploy Test Backend Service to AWS EC2
 
 This guide shows how to deploy your Node.js backend service to an AWS EC2 instance so you don't need to run it locally.
 
@@ -17,13 +17,14 @@ This guide shows how to deploy your Node.js backend service to an AWS EC2 instan
    - Allow SSH (port 22) from your IP
    - Allow HTTP (port 80) from anywhere OR your IP
    - Allow HTTPS (port 443) from anywhere (optional)
-   - **Important**: Allow port 3001 (your backend port) from your IP
 
-   | Type       | Protocol | Port Range | Source                 |
-   | ---------- | -------- | ---------- | ---------------------- |
-   | SSH        | TCP      | 22         | Your IP (or 0.0.0.0/0) |
-   | HTTP       | TCP      | 80         | 0.0.0.0/0              |
-   | Custom TCP | TCP      | 3001       | Your IP (or 0.0.0.0/0) |
+- **Important**: Allow port 8080 (your public backend port) from your IP
+
+| Type       | Protocol | Port Range | Source                 |
+| ---------- | -------- | ---------- | ---------------------- |
+| SSH        | TCP      | 22         | Your IP (or 0.0.0.0/0) |
+| HTTP       | TCP      | 80         | 0.0.0.0/0              |
+| Custom TCP | TCP      | 8080       | Your IP (or 0.0.0.0/0) |
 
 7. Key pair: **Create new key pair** (save as `chaos-key.pem`) and download it
 8. Storage: 20GB (default) is fine
@@ -163,7 +164,7 @@ node chaos-backend-service.js
 You should see:
 
 ```
-[INFO] CHAOS Backend Service listening on port 3001
+[INFO] CHaOS Backend Service listening on port 3001
 ```
 
 Press `Ctrl+C` to stop it temporarily.
@@ -223,13 +224,13 @@ const API_URL = "http://localhost:3001/api/incidents";
 **After (EC2 server):**
 
 ```javascript
-const API_URL = "http://54.123.45.67:3001/api/incidents";
+const API_URL = "http://54.123.45.67:8080/api/incidents";
 ```
 
 Or use a domain name if you have one:
 
 ```javascript
-const API_URL = "http://chaos-backend.example.com:3001/api/incidents";
+const API_URL = "http://chaos-backend.example.com:8080/api/incidents";
 ```
 
 ### 8.3 Reload the extension
@@ -246,7 +247,7 @@ const API_URL = "http://chaos-backend.example.com:3001/api/incidents";
 Test the backend health check from your local machine:
 
 ```bash
-curl http://54.123.45.67:3001/api/health
+curl http://54.123.45.67:8080/api/health
 ```
 
 You should see:
@@ -254,7 +255,7 @@ You should see:
 ```json
 {
   "status": "ok",
-  "service": "CHAOS Backend Service",
+  "service": "Test Backend Service",
   "version": "1.0.0",
   "timestamp": "2025-03-09T..."
 }
@@ -263,7 +264,7 @@ You should see:
 Test an actual incident query:
 
 ```bash
-curl "http://54.123.45.67:3001/api/incidents?topology=your-topology&minutes=1440"
+curl "http://54.123.45.67:8080/api/incidents?topology=your-topology&minutes=1440"
 ```
 
 ---
@@ -311,7 +312,7 @@ If you have a domain, you can:
 1. Point DNS `A` record to your EC2 public IP
 2. Update extension to use:
    ```javascript
-   const API_URL = "http://chaos-backend.yourdomain.com:3001/api/incidents";
+   const API_URL = "http://chaos-backend.yourdomain.com:8080/api/incidents";
    ```
 
 This makes it easier to remember and more professional.
@@ -362,7 +363,7 @@ https.createServer(options, app).listen(443, () => {
 | Issue                  | Solution                                                         |
 | ---------------------- | ---------------------------------------------------------------- |
 | Can't connect via SSH  | Check security group allows port 22, verify key pair permissions |
-| 403 Forbidden error    | Check security group allows port 3001 from your IP               |
+| 403 Forbidden error    | Check security group allows port 8080 from your IP               |
 | Service not starting   | Run `pm2 logs chaos-backend` to see error details                |
 | DynamoDB access denied | Check IAM role has `AmazonDynamoDBReadOnlyAccess` permissions    |
 | Backend slow           | Might need larger instance (t2.small) or check network issues    |
@@ -385,5 +386,5 @@ pm2 logs chaos-backend -n 50
 pm2 restart chaos-backend
 
 # Test API
-curl http://<PUBLIC_IP>:3001/api/health
+curl http://<PUBLIC_IP>:8080/api/health
 ```

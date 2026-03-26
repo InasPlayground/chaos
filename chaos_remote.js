@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🔵 CHAOS: DOMContentLoaded - Page loaded');
+    const DEFAULT_BACKEND_URL = 'http://52.31.108.16:8080';
     
     const topologyInput = document.getElementById('topology');
     const timeRangeSelect = document.getElementById('timeRange');
@@ -34,6 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
         topologyInput.value = decodeURIComponent(initialTopology);
         console.log('🔵 CHAOS: Topology set from URL:', topologyInput.value);
     }
+
+    migrateLegacyBackendUrl();
 
     // Settings button click handler
     if (settingsBtn) {
@@ -87,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function openSettings() {
         chrome.storage.local.get(['backendUrl', 'awsAccessKeyId', 'awsSecretAccessKey', 'awsRegion'], (result) => {
-            const backendUrl = result.backendUrl || 'http://52.31.108.16:3001';
+            const backendUrl = result.backendUrl || DEFAULT_BACKEND_URL;
             const awsAccessKeyId = result.awsAccessKeyId || '';
             const awsSecretAccessKey = result.awsSecretAccessKey || '';
             const awsRegion = result.awsRegion || 'us-east-1';
@@ -98,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <form id="settingsForm">
                         <div class="form-group">
                             <label for="backendUrl">Backend URL:</label>
-                            <input type="text" id="backendUrl" value="${escapeHtml(backendUrl)}" placeholder="http://localhost:3001">
+                            <input type="text" id="backendUrl" value="${escapeHtml(backendUrl)}" placeholder="${DEFAULT_BACKEND_URL}">
                         </div>
                         
                         <div class="form-group">
@@ -177,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoading();
 
         chrome.storage.local.get(['backendUrl', 'awsAccessKeyId', 'awsSecretAccessKey', 'awsRegion'], (result) => {
-            const backendUrl = result.backendUrl || 'http://52.31.108.16:3001';
+            const backendUrl = result.backendUrl || DEFAULT_BACKEND_URL;
             const awsAccessKeyId = result.awsAccessKeyId;
             const awsSecretAccessKey = result.awsSecretAccessKey;
             const awsRegion = result.awsRegion || 'us-east-1';
@@ -245,8 +248,26 @@ document.addEventListener('DOMContentLoaded', function() {
                         message: error.message,
                         stack: error.stack
                     });
+                    if (error instanceof TypeError && /Failed to fetch/i.test(error.message)) {
+                        showError(`Cannot reach backend at ${apiUrl}. The remote service is down or port 8080 is blocked.`);
+                        return;
+                    }
                     showError(`Unable to fetch incidents: ${error.message}`);
                 });
+        });
+    }
+
+    function migrateLegacyBackendUrl() {
+        chrome.storage.local.get(['backendUrl'], (result) => {
+            const currentUrl = (result.backendUrl || '').trim();
+            if (!currentUrl
+                || currentUrl === 'http://localhost:3001'
+                || currentUrl === 'http://127.0.0.1:3001'
+                || currentUrl === 'http://52.31.108.16:3001') {
+                chrome.storage.local.set({ backendUrl: DEFAULT_BACKEND_URL }, () => {
+                    console.log('🔵 CHAOS: Backend URL set to remote default:', DEFAULT_BACKEND_URL);
+                });
+            }
         });
     }
     /**

@@ -1,4 +1,4 @@
-# VM Installation & Configuration for CHAOS Backend Service
+# VM Installation & Configuration for CHaOS Backend Service
 
 Quick setup guide to deploy your backend service on an existing VM.
 
@@ -9,7 +9,7 @@ Quick setup guide to deploy your backend service on an existing VM.
 - SSH access to your VM
 - Your VM's public IP address
 - Your AWS credentials (Access Key ID & Secret Access Key)
-- Port 3001 open in your VM's firewall
+- Port 8080 open for external backend access
 
 ---
 
@@ -106,7 +106,7 @@ You should see:
 Test in another terminal (from your local machine):
 
 ```bash
-curl http://YOUR_VM_IP:3001/api/health
+curl http://YOUR_VM_IP:8080/api/health
 ```
 
 Expected response:
@@ -114,7 +114,7 @@ Expected response:
 ```json
 {
   "status": "ok",
-  "service": "CHAOS Backend Service",
+  "service": "CHaOS Backend Service",
   "version": "1.0.0",
   "timestamp": "2025-03-09T..."
 }
@@ -184,19 +184,19 @@ const API_URL = "http://localhost:3001/api/incidents";
 **After:**
 
 ```javascript
-const API_URL = "http://YOUR_VM_IP:3001/api/incidents";
+const API_URL = "http://YOUR_VM_IP:8080/api/incidents";
 ```
 
 Example:
 
 ```javascript
-const API_URL = "http://54.123.45.67:3001/api/incidents";
+const API_URL = "http://54.123.45.67:8080/api/incidents";
 ```
 
 **Optional:** If your VM has a domain name:
 
 ```javascript
-const API_URL = "http://chaos-backend.yourdomain.com:3001/api/incidents";
+const API_URL = "http://chaos-backend.yourdomain.com:8080/api/incidents";
 ```
 
 ---
@@ -222,7 +222,7 @@ From your Chrome extension:
 Or test from terminal:
 
 ```bash
-curl "http://YOUR_VM_IP:3001/api/incidents?topology=your-topology&minutes=1440"
+curl "http://YOUR_VM_IP:8080/api/incidents?topology=your-topology&minutes=1440"
 ```
 
 ---
@@ -256,9 +256,9 @@ pm2 delete chaos-backend
 | Issue                          | Solution                                                                                      |
 | ------------------------------ | --------------------------------------------------------------------------------------------- |
 | `Cannot find module 'express'` | Run `npm install` in ~/chaos-backend                                                          |
-| `ECONNREFUSED 3001`            | Service not running. Check `pm2 status` and `pm2 logs`                                        |
+| `ECONNREFUSED 8080`            | Public backend port is not reachable. Check firewall/proxy rules and backend status           |
 | `503 DynamoDB Error`           | Check AWS credentials in `.env`. Verify AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY are correct |
-| `Cannot connect to VM`         | Verify port 3001 is open in firewall. Check VM IP with `hostname -I` on VM                    |
+| `Cannot connect to VM`         | Verify port 8080 is open for external access. Check VM IP with `hostname -I` on VM            |
 | Service crashes after restart  | Check logs: `pm2 logs chaos-backend`                                                          |
 
 ---

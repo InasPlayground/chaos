@@ -59,7 +59,8 @@ When you use the extension for the first time:
    - **AWS Access Key ID**: Your AWS access key
    - **AWS Secret Access Key**: Your AWS secret key
    - **AWS Region**: Select your region (default: us-east-1)
-   - **Backend URL**: Your VM's URL (e.g., `http://54.123.45.67:3001`)
+
+- **Backend URL**: Your VM's URL (e.g., `http://54.123.45.67:8080`)
 
 4. Click **💾 Save**
 
@@ -223,12 +224,12 @@ From your local machine, test the setup:
 
 ```bash
 # Test health check (no credentials needed)
-curl http://YOUR_VM_IP:3001/api/health
+curl http://YOUR_VM_IP:8080/api/health
 
 # Test with credentials
 curl -H "X-AWS-Access-Key-Id: YOUR_KEY" \
      -H "X-AWS-Secret-Access-Key: YOUR_SECRET" \
-     "http://YOUR_VM_IP:3001/api/incidents?topology=test&minutes=1440"
+    "http://YOUR_VM_IP:8080/api/incidents?topology=test&minutes=1440"
 ```
 
 ---

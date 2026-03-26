@@ -54,7 +54,7 @@ When you open the CHAOS popup:
    - AWS Access Key ID
    - AWS Secret Access Key
    - AWS Region (default: us-east-1)
-   - Backend URL (e.g., `http://YOUR_VM_IP:3001`)
+   - Backend URL (e.g., `http://YOUR_VM_IP:8080`)
 3. Click **💾 Save**
 
 Your credentials are now stored locally in your browser - **not on the VM**.

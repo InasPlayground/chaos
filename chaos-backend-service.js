@@ -1,5 +1,5 @@
 /**
- * CHAOS Backend Service
+ * CHaOS Backend Service
  * Express.js server that bridges the Chrome extension with the incident extractor
  * 
  * Install dependencies:
@@ -99,7 +99,7 @@ app.get('/api/incidents', async (req, res) => {
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'ok',
-        service: 'CHAOS Backend Service',
+        service: 'CHaOS Backend Service',
         version: '1.0.0',
         timestamp: new Date().toISOString()
     });
@@ -431,7 +431,7 @@ app.use((req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`
 ╔════════════════════════════════════════════════════════════╗
-║     CHAOS Backend Service - Incident Extractor Bridge     ║
+║     CHaOS Backend Service - Incident Extractor Bridge     ║
 ╚════════════════════════════════════════════════════════════╝
 
 Server running on: http://localhost:${PORT}
