@@ -311,6 +311,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'GET'
             })
                 .then(response => {
+                    if (response.status === 404) {
+                        throw new Error(`Endpoint not found at ${apiUrl}. Remote backend may not have /api/topology-updates deployed.`);
+                    }
                     if (!response.ok) {
                         return response.json().then(data => {
                             throw new Error(data.error || `API error: ${response.statusText}`);
